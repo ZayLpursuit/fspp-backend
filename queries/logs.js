@@ -31,9 +31,9 @@ try {
 }
 
 const updateLog=async (id,log)=>{
-
+    const cal=calculateCalories(log.fiber,log.protein,log.sugar,log.carbs,log.fat)
     try {
-        const updatedLog=await db.one("UPDATE calories SET name=$1, fiber=$2, protein=$3,sugar=$4,carbs=$5,fat=$6 WHERE id=$7 RETURNING *",[log.name,log.fiber,log.protein,log.sugar,log.carbs,log.fat,id])
+        const updatedLog=await db.one("UPDATE calories SET name=$1, fiber=$2, protein=$3,sugar=$4,carbs=$5,fat=$6, calories=$7 WHERE id=$8 RETURNING *",[log.name,log.fiber,log.protein,log.sugar,log.carbs,log.fat,cal,id])
         return updatedLog
     } catch (error) {
         console.log(error)
