@@ -14,7 +14,7 @@ try {
 
 const getOneLog= async (id)=>{
     try {
-        const oneLog= await db.one("SELECT * FROM calories WHERE id=$1",id)
+        const oneLog= await db.oneOrNone("SELECT * FROM calories WHERE id=$1",id)
         return oneLog
     } catch (error) {
         console.log(error)
@@ -42,8 +42,9 @@ const updateLog=async (id,log)=>{
 
 const createLog=async (log)=>{
     const cal=calculateCalories(log.fiber,log.protein,log.sugar,log.carbs,log.fat)
+    const nameCap=capitalize(log.name)
     try {
-        const createdLog=await db.one("INSERT INTO calories (name, fiber, protein,sugar,carbs,fat,calories) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *",[log.name,log.fiber,log.protein,log.sugar,log.carbs,log.fat,cal] )
+        const createdLog=await db.one("INSERT INTO calories (name, fiber, protein,sugar,carbs,fat,calories) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *",[nameCap,log.fiber,log.protein,log.sugar,log.carbs,log.fat,cal] )
 
         
 
@@ -79,5 +80,15 @@ const getMonthlyLog=async ()=>{
         console.log(error)
     }
 }
+
+function capitalize(str) {
+
+    
+    return str
+      .split(" ")
+      .map((itm) => `${itm[0].toUpperCase()}${itm.slice(1).toLowerCase()}`)
+      .join(" ");
+  }
+
 
 module.exports={getAllLogs,getOneLog,deleteOneLog,updateLog,createLog,calculateCalories,getMonthlyLog,getWeeklyLog}

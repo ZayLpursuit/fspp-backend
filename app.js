@@ -16,4 +16,8 @@ app.get("/",(req,res)=>{
     res.send("welcome")
 })
 
+app.get("*",(req,res)=>{
+    res.send("Page Not Found")
+})
+
 module.exports=app

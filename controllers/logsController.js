@@ -8,6 +8,8 @@ const{getAllLogs,getOneLog,deleteOneLog,updateLog,createLog,getMonthlyLog,getWee
 logs.get("/",async (req,res)=>{
 
     const AllLogs=await getAllLogs()
+
+   
     if(AllLogs[0]){
     res.json(AllLogs)
     }
@@ -38,30 +40,29 @@ logs.get("/monthly-log", async (req,res)=>{
 logs.get('/:id', async (req,res)=>{
     const {id}=req.params
     const oneLog=await getOneLog(id)
-    if (oneLog){
-    res.json(oneLog)
-    }
-    else{
-        res.status(400).json({error:"Log not found"})
-    }
+    if(oneLog){
+   res.json(oneLog)}
+   else{
+    res.status(400).json({error:"Log Not Found"})
+   }
+   
+  
 })
 
 
 logs.delete("/:id",async(req,res)=>{
     const {id}=req.params
     const deleted=await deleteOneLog(id)
-    if(deleted){
-    res.json(deleted)}
-    else{
-        res.status(500).json({error:"not found"})
-    }
+   
+    res.json(deleted)
+   
 })
 
 logs.put("/:id",async(req,res)=>{
     const {id}=req.params
 
     const updatedLog=await updateLog(id,req.body)
-    if(updatedLog[id]){
+    if(updatedLog.id){
     res.json(updatedLog)}
     else{
         res.status(400).json("Not found")
